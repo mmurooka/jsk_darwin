@@ -21,6 +21,7 @@ mkdir -p ~/ros/indigo/src
 cd ~/ros/indigo/src
 wstool init
 
+git clone https://github.com/furushchev/jsk_darwin
 wstool merge jsk_darwin/darwin-op2.rosinstall -t .
 wstool up -j 3
 
