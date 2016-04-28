@@ -1,0 +1,12 @@
+- git:
+    local-name: jsk_darwin
+    uri: https://github.com/furushchev/jsk_darwin.git
+    version: master
+- git:
+    local-name: ROBOTIS-Framework
+    uri: https://github.com/furushchev/_OLD_ROBOTIS-Framework.git
+    version: publish-imu
+- git:
+    local-name: ROBOTIS-OP
+    uri: https://github.com/furushchev/_OLD_ROBOTIS-OP.git
+    version: add-imu
