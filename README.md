@@ -42,6 +42,8 @@ exec -l $SHELL
 
 ### Launch example
 
+- display imu value
+
 ```bash
 sudo bash
 
@@ -52,3 +54,13 @@ roslaunch robotis_example robotis_example.launch
 rostopic echo /imu
 ```
 
+- visualization
+
+```bash
+source ~/ros/indigo/devel/setup.bash
+rossetrobot <ip address of darwin>
+rossetip # use same network of robot
+
+roslaunch robotis_op2_description robotis_op2_rviz.launch
+# you can set /map as Fixed Frame to see robot pose.
+```
