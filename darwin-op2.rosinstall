@@ -5,4 +5,4 @@
 - git:
     local-name: ROBOTIS-OP
     uri: https://github.com/furushchev/_OLD_ROBOTIS-OP.git
-    version: add-imu
+    version: fix-all
