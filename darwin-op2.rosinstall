@@ -1,8 +1,8 @@
 - git:
     local-name: ROBOTIS-Framework
-    uri: https://github.com/furushchev/_OLD_ROBOTIS-Framework.git
+    uri: https://github.com/agent-system/_OLD_ROBOTIS-Framework.git
     version: publish-imu
 - git:
     local-name: ROBOTIS-OP
-    uri: https://github.com/furushchev/_OLD_ROBOTIS-OP.git
+    uri: https://github.com/agent-system/_OLD_ROBOTIS-OP.git
     version: fix-all
