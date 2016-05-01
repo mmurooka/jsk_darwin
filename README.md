@@ -64,3 +64,34 @@ rossetip # use same network of robot
 roslaunch robotis_op2_description robotis_op2_rviz.launch
 # you can set /map as Fixed Frame to see robot pose.
 ```
+
+- Robot camera view
+
+```bash
+sudo bash
+
+roslaunch robotis_op2_camera robotis_op2_camera.launch
+# you can view with /image_raw on rviz or rqt_image_view.
+```
+
+- Ball track view
+
+```bash
+sudo bash
+
+roslaunch ball_detector ball_detector_from_op.launch
+# you can view the result with /ball_detector_node/image_out on rviz or rqt_image_view.
+```
+
+- euslisp example
+
+```bash
+roscd robotis_example/euslisp
+roseus robotis_op2-interface.l # run euslisp with prompt $ and ;; for comments
+
+$ init     ;; create irtview the robot model *robot*
+$ demo     ;; do-until-key showing the states of the real-robot *ri* on the irtview
+
+```
+
+
