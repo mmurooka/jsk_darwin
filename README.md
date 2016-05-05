@@ -90,8 +90,7 @@ roscd robotis_example/euslisp
 roseus robotis_op2-interface.l # run euslisp with prompt $ and ;; for comments
 
 $ init     ;; create irtview the robot model *robot*
-$ demo     ;; do-until-key showing the states of the real-robot *ri* on the irtview
-$ demo1    ;; show torque circles
+$ demo     ;; show the states
 
 ```
 
