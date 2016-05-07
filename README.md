@@ -86,12 +86,14 @@ roslaunch ball_detector ball_detector_from_op.launch
 - euslisp example
 
 ```bash
+sudo apt-get install ros-indigo-euslisp ros-indigo-jskeus ros-indigo-roseus ros-indigo-pr2eus
 roscd robotis_example/euslisp
 roseus robotis_op2-interface.l # run euslisp with prompt $ and ;; for comments
 
 $ init     ;; create irtview the robot model *robot*
-$ demo     ;; show the states
-
+$ demo     ;; show the states using itimer
+$ demo-stop ;; stop the itimer
+$ demo1    ;; show the states using do-until-key
 ```
 
 
