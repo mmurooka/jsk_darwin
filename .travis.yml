@@ -1,0 +1,32 @@
+sudo: required
+dist: trusty
+language: generic
+before_install:
+  - export CI_SOURCE_PATH=$(pwd)
+  - export REPOSITORY_NAME=${PWD##*/}
+  - export ROS_PARALLEL_JOBS='-j8 -l6'
+script:
+  # add ros to apt source.list
+  - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
+  - sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-key 0xB01FA116
+  - sudo apt-get update
+  # install fundamental ros requisities
+  - sudo apt-get install python-catkin-tools python-wstool python-rosdep python-pip python-setuptools ros-indigo-rosbash
+  - source /opt/ros/indigo/setup.bash
+  # create catkin source directory
+  - mkdir -p ~/ros/indigo/src
+  - cd ~/ros/indigo/src
+  - wstool init
+  - wstool merge $CI_SOURCE_PATH/darwin-op2.rosinstall -t .
+  - wstool up -j 3
+  # install dependencies
+  - sudo rosdep init
+  - rosdep update
+  - rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
+  # build packages
+  - cd ~/ros/indigo
+  - catkin init
+  - catkin build
+  # source to use programs
+  - source ~/ros/indigo/devel/setup.bash
+  - rospack find robotis_op2_description
