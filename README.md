@@ -45,10 +45,16 @@ exec -l $SHELL
 - display imu value
 
 ```bash
-sudo bash
 
+# imu transform
+sudo apt-get install ros-indigo-hector-imu-attitude-to-tf
+sudo apt-get install ros-indigo-rviz-imu-plugin
+
+sudo bash
 # servo on
 roslaunch robotis_example robotis_example.launch
+# another sudo bash
+roslaunch robotis_example imu_view.launch
 
 # check imu value
 rostopic echo /imu
