@@ -101,7 +101,5 @@ $ demo     ;; show the states using itimer
 $ demo-stop ;; stop the itimer
 $ demo1    ;; show the states using do-until-key
 ```
-```
-https://github.com/agent-system/jsk_darwin/Screenshot from 2016-05-08 06:19:25.png
-```
+<https://github.com/agent-system/jsk_darwin/Screenshot from 2016-05-08 06:19:25.png>
 
