@@ -102,4 +102,4 @@ $ demo-stop ;; stop the itimer
 $ demo1    ;; show the states using do-until-key
 ```
 
-
+ jsk_darwin/Screenshot from 2016-05-08 06:19:25.png 
