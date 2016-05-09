@@ -45,10 +45,16 @@ exec -l $SHELL
 - display imu value
 
 ```bash
-sudo bash
 
+# imu transform
+sudo apt-get install ros-indigo-hector-imu-attitude-to-tf
+sudo apt-get install ros-indigo-rviz-imu-plugin
+
+sudo bash
 # servo on
 roslaunch robotis_example robotis_example.launch
+# another sudo bash
+roslaunch robotis_example imu_view.launch
 
 # check imu value
 rostopic echo /imu
@@ -86,12 +92,15 @@ roslaunch ball_detector ball_detector_from_op.launch
 - euslisp example
 
 ```bash
+sudo apt-get install ros-indigo-euslisp ros-indigo-jskeus ros-indigo-roseus ros-indigo-pr2eus
 roscd robotis_example/euslisp
 roseus robotis_op2-interface.l # run euslisp with prompt $ and ;; for comments
 
 $ init     ;; create irtview the robot model *robot*
-$ demo     ;; show the states
-
+$ demo     ;; show the states using itimer
+$ demo-stop ;; stop the itimer
+$ demo1    ;; show the states using do-until-key
 ```
 
+![Screen Shot]( jsk_darwin/Screenshot from 2016-05-08 06:19:25.png )
 
