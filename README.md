@@ -28,7 +28,7 @@ wstool up -j 3
 # install dependencies
 sudo rosdep init
 rosdep update
-rosdep install --from-paths . --ignore-src -r -n -y
+rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
 
 # build packages
 cd ~/ros/indigo
