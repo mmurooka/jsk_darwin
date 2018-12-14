@@ -1,6 +1,6 @@
 # jsk_darwin
 
-### setup ROS on Darwin OP2
+### Install
 
 ```bash
 # add ros to apt source.list
@@ -29,63 +29,43 @@ rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
 # build packages
 cd ~/ros/ws_darwin
 catkin init
-catkin build op2_manager robotis_op2_description jsk_darwin
+catkin build
 
 # source to use programs
 echo 'source $HOME/ros/ws_darwin/devel/setup.bash' >> ~/.bashrc
 exec -l $SHELL
 ```
 
-### Launch example
-
-- display imu value
+### Launch robot
 
 ```bash
-
-# imu transform
-sudo apt-get install ros-indigo-hector-imu-attitude-to-tf
-sudo apt-get install ros-indigo-rviz-imu-plugin
-
+ssh robotis@<ip address of darwin> # Darwin IP
 sudo bash
-# servo on
-roslaunch robotis_example robotis_example.launch
-# another sudo bash
-roslaunch robotis_example imu_view.launch
-
-# check imu value
-rostopic echo /imu
+roslaunch jsk_darwin darwin_op2.launch
+# Servo becomes on and Darwin stands up and then sit down.
 ```
 
-- visualization
+### Launch robot camera
 
 ```bash
-source ~/ros/ws_darwin/devel/setup.bash
+ssh robotis@<ip address of darwin> # Darwin IP
+sudo bash
+roslaunch jsk_darwin darwin_op2_camera.launch
+# /image_raw topic starts to be published.
+# If program causes error, you need to reboot Darwin PC.
+```
+
+### Visualize
+
+```bash
 rossetrobot <ip address of darwin>
 rossetip # use same network of robot
-
-roslaunch robotis_op2_description robotis_op2_rviz.launch
-# you can set /map as Fixed Frame to see robot pose.
+source ~/ros/ws_darwin/devel/setup.bash
+roslaunch jsk_darwin darwin_op2_rviz.launch
+# Rviz launches and Darwin model is visualized.
 ```
 
-- Robot camera view
-
-```bash
-sudo bash
-
-roslaunch robotis_op2_camera robotis_op2_camera.launch
-# you can view with /image_raw on rviz or rqt_image_view.
-```
-
-- Ball track view
-
-```bash
-sudo bash
-
-roslaunch ball_detector ball_detector_from_op.launch
-# you can view the result with /ball_detector_node/image_out on rviz or rqt_image_view.
-```
-
-- euslisp example
+### Move from EusLisp
 
 ```bash
 sudo apt-get install ros-indigo-euslisp ros-indigo-jskeus ros-indigo-roseus ros-indigo-pr2eus
