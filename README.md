@@ -1,7 +1,5 @@
 # jsk_darwin
 
-Author: Yuki Furuta <furushchev@mail.ru>
-
 ### setup ROS on Darwin OP2
 
 ```bash
@@ -17,13 +15,11 @@ sudo apt-get install python-catkin-tools python-wstool python-rosdep python-pip 
 source /opt/ros/indigo/setup.bash
 
 # create catkin source directory
-mkdir -p ~/ros/indigo/src
-cd ~/ros/indigo/src
+mkdir -p ~/ros/ws_darwin/src
+cd ~/ros/ws_darwin/src
 wstool init
-
-git clone https://github.com/agent-system/jsk_darwin
-wstool merge jsk_darwin/darwin-op2.rosinstall -t .
-wstool up -j 3
+wstool merge  https://raw.githubusercontent.com/mmurooka/jsk_darwin/fix-for-using-robotis-official-repo/darwin-op2.rosinstall -t .
+wstool up -j 10
 
 # install dependencies
 sudo rosdep init
@@ -31,12 +27,12 @@ rosdep update
 rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
 
 # build packages
-cd ~/ros/indigo
+cd ~/ros/ws_darwin
 catkin init
-catkin build
+catkin build op2_manager robotis_op2_description jsk_darwin
 
 # source to use programs
-echo 'source $HOME/ros/indigo/devel/setup.bash' >> ~/.bashrc
+echo 'source $HOME/ros/ws_darwin/devel/setup.bash' >> ~/.bashrc
 exec -l $SHELL
 ```
 
@@ -63,7 +59,7 @@ rostopic echo /imu
 - visualization
 
 ```bash
-source ~/ros/indigo/devel/setup.bash
+source ~/ros/ws_darwin/devel/setup.bash
 rossetrobot <ip address of darwin>
 rossetip # use same network of robot
 
