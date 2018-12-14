@@ -1,0 +1,21 @@
+<package>
+  <name>jsk_darwin</name>
+  <version>0.0.1</version>
+
+  <description>
+    package for developing Darwin software in JSK
+  </description>
+  <author email="furushchev@jsk.imi.i.u-tokyo.ac.jp">Yuki Furuta</author>
+  <author email="murooka@jsk.imi.i.u-tokyo.ac.jp">Masaki Murooka</author>
+  <maintainer email="furushchev@jsk.imi.i.u-tokyo.ac.jp">Yuki Furuta</maintainer>
+  <maintainer email="murooka@jsk.imi.i.u-tokyo.ac.jp">Masaki Murooka</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roseus</build_depend>
+
+  <run_depend>roseus</run_depend>
+
+</package>
