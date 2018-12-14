@@ -20,6 +20,9 @@
     local-name: ROBOTIS-OP3
     uri: https://github.com/ROBOTIS-GIT/ROBOTIS-OP3
 - git:
+    local-name: ROBOTIS-OP3-Demo
+    uri: https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Demo.git
+- git:
     local-name: ROBOTIS-OP3-Tools
     uri: https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Tools
 - git:
