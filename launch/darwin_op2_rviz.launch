@@ -1,0 +1,4 @@
+<launch>
+  <node name="darwin_op2_rviz" pkg="rviz" type="rviz"
+        args="-d $(find jsk_darwin)/config/darwin_op2.rviz" />
+</launch>
