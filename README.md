@@ -45,7 +45,7 @@ roslaunch jsk_darwin darwin_op2.launch
 # Servo becomes on and Darwin stands up and then sit down.
 ```
 
-### Launch robot camera
+### Launch robot camera (unnecessary if you don't use camera)
 
 ```bash
 ssh robotis@<ip address of darwin> # Darwin IP
@@ -63,6 +63,7 @@ rossetip # use same network of robot
 source ~/ros/ws_darwin/devel/setup.bash
 roslaunch jsk_darwin darwin_op2_rviz.launch
 # Rviz launches and Darwin model is visualized.
+# Check IMU in displays panel to visualize IMU data.
 ```
 ![](./figs/darwin_op2_rviz.png)
 
