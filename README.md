@@ -64,6 +64,7 @@ source ~/ros/ws_darwin/devel/setup.bash
 roslaunch jsk_darwin darwin_op2_rviz.launch
 # Rviz launches and Darwin model is visualized.
 ```
+![](./figs/darwin_op2_rviz.png)
 
 ### Move from EusLisp
 
