@@ -1,0 +1,13 @@
+<launch>
+  <param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find robotis_op2_description)/urdf/robotis_op2.urdf.xacro'" />
+
+  <include file="$(find op2_manager)/launch/op2_manager.launch" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="false"/>
+    <rosparam param="/source_list">[/robotis/present_joint_states]</rosparam>
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+</launch>
