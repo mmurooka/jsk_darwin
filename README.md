@@ -61,6 +61,7 @@ roslaunch jsk_darwin darwin_op2_camera.launch
 rossetrobot <ip address of darwin>
 rossetip # use same network of robot
 source ~/ros/ws_darwin/devel/setup.bash
+
 roslaunch jsk_darwin darwin_op2_rviz.launch
 # Rviz launches and Darwin model is visualized.
 # Check IMU in displays panel to visualize IMU data.
@@ -70,15 +71,23 @@ roslaunch jsk_darwin darwin_op2_rviz.launch
 ### Move from EusLisp
 
 ```bash
-sudo apt-get install ros-indigo-euslisp ros-indigo-jskeus ros-indigo-roseus ros-indigo-pr2eus
-roscd robotis_example/euslisp
+rossetrobot <ip address of darwin>
+rossetip # use same network of robot
+source ~/ros/ws_darwin/devel/setup.bash
+
+roscd jsk_darwin/euslisp
 roseus robotis_op2-interface.l # run euslisp with prompt $ and ;; for comments
 
-$ init     ;; create irtview the robot model *robot*
-$ demo     ;; show the states using itimer
-$ demo-stop ;; stop the itimer
-$ demo1    ;; show the states using do-until-key
+;; initialize robot interface
+$ (robotis_op2-init)
+$ (objects (list *robotis_op2*))
+
+;; send command
+$ (send *robotis_op2* :init-pose)
+$ (send *ri* :angle-vector (send *robotis_op2* :angle-vector) 10000)
+$ (send *ri* :wait-interpolation)
+
+;; get actual state
+$ (send *robotis_op2* :angle-vector (send *ri* :state :potentio-vector))
 ```
-
-![Screen Shot](./Screenshot from 2016-05-08 06:19:25.png)
-
+![](./figs/robotis_op2_euslisp.png)
