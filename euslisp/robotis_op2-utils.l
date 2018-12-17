@@ -1,0 +1,53 @@
+(load "./robotis_op2-interface.l")
+
+(ros::roseus-add-msgs "robotis_controller_msgs")
+
+
+
+(defun joint-servo-off
+    ()
+  (ros::advertise "/robotis/set_control_mode" std_msgs::String 1)
+  (ros::advertise "/robotis/sync_write_item" robotis_controller_msgs::SyncWriteItem 1)
+
+  (let* ((string-msg (instance std_msgs::String :init :data "DirectControlMode"))
+         (write-msg (instance robotis_controller_msgs::SyncWriteItem :init))
+         )
+    (ros::publish "/robotis/set_control_mode" string-msg)
+    (send write-msg :item_name "torque_enable")
+    (send write-msg :joint_name (send-all (send *robot* :joint-list) :name))
+    (send write-msg :value (make-list (length (send write-msg :joint_name)) :initial-element 0))
+    (ros::publish "/robotis/sync_write_item" write-msg)
+    )
+  )
+
+(defun measure-joint-angle-range-with-real-robot
+    (&key (joint-list (send *robot* :joint-list)))
+  (setq *joint-min-max-list* nil)
+  (dolist (jnt joint-list)
+    (send *robot* :init-pose)
+    (warning-message 3 "=== target joint: ~a ===~%" (send jnt :name))
+    (warning-message 2 "press Enter to stop animation~%")
+    (do-until-key
+     (send jnt :joint-angle (send jnt :min-angle))
+     (while (< (send jnt :joint-angle) (send jnt :max-angle))
+       (x::window-main-one)
+       (send jnt :joint-angle 3 :relative t)
+       (send *irtviewer* :draw-objects))
+     )
+    (let* ((min-angle)
+           (max-angle)
+           )
+      (warning-message 2 "move joint to min angle and press Enter~%")
+      (read-line)
+      (send *robot* :angle-vector (send *ri* :state :potentio-vector))
+      (send *irtviewer* :draw-objects)
+      (setq min-angle (send jnt :joint-angle))
+      (warning-message 2 "move joint to max angle and press Enter~%")
+      (read-line)
+      (send *robot* :angle-vector (send *ri* :state :potentio-vector))
+      (send *irtviewer* :draw-objects)
+      (setq max-angle (send jnt :joint-angle))
+      (push (list (send jnt :name) min-angle max-angle) *joint-min-max-list*)
+      )
+    )
+  )
