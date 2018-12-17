@@ -1,5 +1,3 @@
-(ros::roseus "robotis_op2")
-
 (require "package://jsk_darwin/euslisp/robotis_op2.l")
 (require "package://pr2eus/robot-interface.l")
 
@@ -23,7 +21,7 @@
      (cons :controller-action "/fullbody_controller/follow_joint_trajectory_action")
      (cons :controller-state "/fullbody_controller/follow_joint_trajectory_action/state")
      (cons :action-type control_msgs::FollowJointTrajectoryAction)
-     (cons :joint-names (list "l_hip_yaw" "l_hip_roll" "l_hip_pitch" "l_knee" "l_ank_pitch" "l_ank_roll" "r_hip_yaw" "r_hip_roll" "r_hip_pitch" "r_knee" "r_ank_pitch" "r_ank_roll" "r_sho_pitch" "r_sho_roll" "r_el" "l_sho_pitch" "l_sho_roll" "l_el" "head_pan" "head_tilt")))))
+     (cons :joint-names (send-all (send robot :joint-list) :name)))))
   )
 
 (defun robotis_op2-init (&optional (create-viewer))
@@ -34,6 +32,5 @@
   (ros::spin-once)
   (send *ri* :spin-once)
 
-  (send *robotis_op2* :angle-vector (send *ri* :state :potentio-vector))
   (when create-viewer (objects (list *robotis_op2*)))
   )
