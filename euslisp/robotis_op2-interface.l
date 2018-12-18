@@ -1,4 +1,5 @@
 (require "package://jsk_darwin/euslisp/robotis_op2.l")
+(require "package://jsk_darwin/euslisp/robotis_op2-utils.l")
 (require "package://pr2eus/robot-interface.l")
 
 

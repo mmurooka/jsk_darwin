@@ -1,7 +1,81 @@
-(load "./robotis_op2-interface.l")
+(load "./robotis_op2.l")
 
 (ros::roseus-add-msgs "robotis_controller_msgs")
 
+
+(defun set-min-max-joint-angle
+    ()
+  ;; head
+  (send (send *robot* :joint "head_pan") :max-angle 120)
+  (send (send *robot* :joint "head_pan") :min-angle -120)
+
+  (send (send *robot* :joint "head_tilt") :max-angle 45)
+  (send (send *robot* :joint "head_tilt") :min-angle -30)
+
+  ;; arms
+  (send (send *robot* :joint "r_sho_pitch") :max-angle 150)
+  (send (send *robot* :joint "r_sho_pitch") :min-angle -150)
+  (send (send *robot* :joint "l_sho_pitch") :max-angle 150)
+  (send (send *robot* :joint "l_sho_pitch") :min-angle -150)
+
+  (send (send *robot* :joint "r_sho_roll") :max-angle 135)
+  (send (send *robot* :joint "r_sho_roll") :min-angle -40)
+  (send (send *robot* :joint "l_sho_roll") :max-angle 40)
+  (send (send *robot* :joint "l_sho_roll") :min-angle -135)
+
+  (send (send *robot* :joint "r_el") :max-angle 70)
+  (send (send *robot* :joint "r_el") :min-angle -150)
+  (send (send *robot* :joint "l_el") :max-angle 150)
+  (send (send *robot* :joint "l_el") :min-angle -70)
+
+  ;; legs
+  (send (send *robot* :joint "r_hip_yaw") :max-angle 40)
+  (send (send *robot* :joint "r_hip_yaw") :min-angle -60)
+  (send (send *robot* :joint "l_hip_yaw") :max-angle 60)
+  (send (send *robot* :joint "l_hip_yaw") :min-angle -40)
+
+  (send (send *robot* :joint "r_hip_roll") :max-angle 90)
+  (send (send *robot* :joint "r_hip_roll") :min-angle -60)
+  (send (send *robot* :joint "l_hip_roll") :max-angle 60)
+  (send (send *robot* :joint "l_hip_roll") :min-angle -90)
+
+  (send (send *robot* :joint "r_hip_pitch") :max-angle 90)
+  (send (send *robot* :joint "r_hip_pitch") :min-angle -90)
+  (send (send *robot* :joint "l_hip_pitch") :max-angle 90)
+  (send (send *robot* :joint "l_hip_pitch") :min-angle -90)
+
+  (send (send *robot* :joint "r_knee") :max-angle 85)
+  (send (send *robot* :joint "r_knee") :min-angle 0)
+  (send (send *robot* :joint "l_knee") :max-angle 0)
+  (send (send *robot* :joint "l_knee") :min-angle -85)
+
+  (send (send *robot* :joint "r_ank_pitch") :max-angle 70)
+  (send (send *robot* :joint "r_ank_pitch") :min-angle -20)
+  (send (send *robot* :joint "l_ank_pitch") :max-angle 20)
+  (send (send *robot* :joint "l_ank_pitch") :min-angle -70)
+
+  (send (send *robot* :joint "r_ank_roll") :max-angle 30)
+  (send (send *robot* :joint "r_ank_roll") :min-angle -20)
+  (send (send *robot* :joint "l_ank_roll") :max-angle 20)
+  (send (send *robot* :joint "l_ank_roll") :min-angle -30)
+  )
+
+(defun visualize-joint-angle-range
+    (&key (joint-list (send *robot* :joint-list)))
+  (setq *joint-min-max-list* nil)
+  (dolist (jnt joint-list)
+    (send *robot* :init-pose)
+    (warning-message 3 "=== target joint: ~a ===~%" (send jnt :name))
+    (do-until-key
+     (send jnt :joint-angle (send jnt :min-angle))
+     (while (< (send jnt :joint-angle) (send jnt :max-angle))
+       (x::window-main-one)
+       (send jnt :joint-angle 1 :relative t)
+       (send *irtviewer* :draw-objects)
+       (unix::usleep (* 10 1000)))
+     )
+    )
+  )
 
 
 (defun joint-servo-off
