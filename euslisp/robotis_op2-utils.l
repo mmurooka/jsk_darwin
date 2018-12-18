@@ -24,8 +24,8 @@
   (send (send *robot* :joint "l_sho_roll") :min-angle -135)
 
   (send (send *robot* :joint "r_el") :max-angle 70)
-  (send (send *robot* :joint "r_el") :min-angle -150)
-  (send (send *robot* :joint "l_el") :max-angle 150)
+  (send (send *robot* :joint "r_el") :min-angle -90)
+  (send (send *robot* :joint "l_el") :max-angle 90)
   (send (send *robot* :joint "l_el") :min-angle -70)
 
   ;; legs
