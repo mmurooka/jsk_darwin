@@ -1,32 +1,35 @@
-sudo: required
-dist: trusty
 language: generic
+dist: trusty
+sudo: required
+cache: apt
+services: docker
+matrix:
+  fast_finish: true
+
+env:
+  global:
+  - DEBIAN_FRONTEND=noninteractive
+  - ROS_DISTRO=kinetic
+  - QT_X11_NO_MITSHM=1
+  - DISPLAY=:0
+  - DOCKER_IMAGE="osrf/ros:$ROS_DISTRO-desktop"
+  - BUILD_PKGS="jsk_darwin"
+  matrix:
+  - TEST_PKGS="jsk_darwin"
 before_install:
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+install:
   - export CI_SOURCE_PATH=$(pwd)
   - export REPOSITORY_NAME=${PWD##*/}
-  - export ROS_PARALLEL_JOBS='-j8 -l6'
+before_script:
+  - sudo apt-get update -q || echo Ignore error of apt-get update
+  - sudo -E apt-get -y -q -qq install mesa-utils xserver-xorg-video-dummy xvfb x11-xserver-utils x11-xfs-utils
+  - sudo -E Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /tmp/xorg.log -config $CI_SOURCE_PATH/.ci/dummy.xorg.conf $DISPLAY &
+  - sleep 1
+  - glxinfo | grep GLX || cat /tmp/xorg.log
+  - xhost +local:root
 script:
-  # add ros to apt source.list
-  - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
-  - sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-key 0xB01FA116
-  - sudo apt-get update
-  # install fundamental ros requisities
-  - sudo apt-get install python-catkin-tools python-wstool python-rosdep python-pip python-setuptools ros-indigo-rosbash
-  - source /opt/ros/indigo/setup.bash
-  # create catkin source directory
-  - mkdir -p ~/ros/indigo/src
-  - cd ~/ros/indigo/src
-  - wstool init
-  - wstool merge $CI_SOURCE_PATH/darwin-op2-beginner.rosinstall -t .
-  - wstool up -j 3
-  # install dependencies
-  - sudo rosdep init
-  - rosdep update
-  - rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
-  # build packages
-  - cd ~/ros/indigo
-  - catkin init
-  - catkin build
-  # source to use programs
-  - source ~/ros/indigo/devel/setup.bash
-  - rospack find robotis_op2_description
+  - echo "Testing branch $TRAVIS_BRANCH of $REPOSITORY_NAME"
+  - docker run -i -v $CI_SOURCE_PATH:$CI_SOURCE_PATH -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME:$HOME -e QT_X11_NO_MITSHM -e DISPLAY -e CI_SOURCE_PATH -e HOME -e ROS_DISTRO -e BUILD_PKGS -e TEST_PKGS -e CMAKE_ARGS -e REPOSITORY_NAME -e DEBIAN_FRONTEND -t "$DOCKER_IMAGE" sh -c "cd $CI_SOURCE_PATH; ./.ci/docker.sh"
+after_success:
+  - sudo chown -R travis:travis /home/travis
