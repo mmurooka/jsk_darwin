@@ -1,0 +1,10 @@
+- git:
+    local-name: ROBOTIS-Framework-msgs
+    uri: https://github.com/ROBOTIS-GIT/ROBOTIS-Framework-msgs
+- git:
+    local-name: ROBOTIS-OP2-Common
+    uri: https://github.com/ROBOTIS-GIT/ROBOTIS-OP2-Common
+- git:
+    local-name: jsk_darwin
+    uri: https://github.com/mmurooka/jsk_darwin
+    version: fix-for-using-robotis-official-repo

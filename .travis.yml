@@ -17,7 +17,7 @@ script:
   - mkdir -p ~/ros/indigo/src
   - cd ~/ros/indigo/src
   - wstool init
-  - wstool merge $CI_SOURCE_PATH/darwin-op2.rosinstall -t .
+  - wstool merge $CI_SOURCE_PATH/darwin-op2-beginner.rosinstall -t .
   - wstool up -j 3
   # install dependencies
   - sudo rosdep init

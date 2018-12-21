@@ -1,6 +1,6 @@
 # jsk_darwin
 
-### Install
+### Install (For Beginner, for example see robot model in Rviz and move robot with euslisp)
 
 ```bash
 # add ros to apt source.list
@@ -14,6 +14,31 @@ sudo apt-get install python-catkin-tools python-wstool python-rosdep python-pip 
 
 source /opt/ros/indigo/setup.bash
 
+# create catkin source directory
+mkdir -p ~/ros/ws_darwin/src
+cd ~/ros/ws_darwin/src
+wstool init
+wstool merge  https://raw.githubusercontent.com/mmurooka/jsk_darwin/fix-for-using-robotis-official-repo/darwin-op2-beginner.rosinstall -t .
+wstool up -j 10
+
+# install dependencies
+sudo rosdep init
+rosdep update
+rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
+
+# build packages
+cd ~/ros/ws_darwin
+catkin init
+catkin build
+
+# source to use programs
+echo 'source $HOME/ros/ws_darwin/devel/setup.bash' >> ~/.bashrc
+exec -l $SHELL
+```
+
+### Install (For Darwin-inside PC or Developer only)
+
+```bash
 # create catkin source directory
 mkdir -p ~/ros/ws_darwin/src
 cd ~/ros/ws_darwin/src
