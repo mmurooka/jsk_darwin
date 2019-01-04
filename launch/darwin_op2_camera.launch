@@ -1,0 +1,11 @@
+<launch>    
+  <node pkg="uvc_camera" type="uvc_camera_node" name="uvc_camera_node" output="screen">
+    <param name="device" type="string" value="/dev/video0" />
+    <param name="width" type="int" value="800" />
+    <param name="height" type="int" value="600" />
+    <param name="fps" type="int" value="30" />
+    <param name="auto_gain" value="false" />
+    <param name="gain" type="int" value="120" />
+    <param name="exposure" value="100" />
+  </node>
+</launch>    

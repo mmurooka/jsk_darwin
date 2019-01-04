@@ -1,8 +1,6 @@
 # jsk_darwin
 
-Author: Yuki Furuta <furushchev@mail.ru>
-
-### setup ROS on Darwin OP2
+### Install (For Beginner, for example see robot model in Rviz and move robot with euslisp)
 
 ```bash
 # add ros to apt source.list
@@ -17,13 +15,11 @@ sudo apt-get install python-catkin-tools python-wstool python-rosdep python-pip 
 source /opt/ros/indigo/setup.bash
 
 # create catkin source directory
-mkdir -p ~/ros/indigo/src
-cd ~/ros/indigo/src
+mkdir -p ~/ros/ws_darwin/src
+cd ~/ros/ws_darwin/src
 wstool init
-
-git clone https://github.com/agent-system/jsk_darwin
-wstool merge jsk_darwin/darwin-op2.rosinstall -t .
-wstool up -j 3
+wstool merge  https://raw.githubusercontent.com/mmurooka/jsk_darwin/fix-for-using-robotis-official-repo/darwin-op2-beginner.rosinstall -t .
+wstool up -j 10
 
 # install dependencies
 sudo rosdep init
@@ -31,76 +27,92 @@ rosdep update
 rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
 
 # build packages
-cd ~/ros/indigo
+cd ~/ros/ws_darwin
 catkin init
 catkin build
 
 # source to use programs
-echo 'source $HOME/ros/indigo/devel/setup.bash' >> ~/.bashrc
+echo 'source $HOME/ros/ws_darwin/devel/setup.bash' >> ~/.bashrc
 exec -l $SHELL
 ```
 
-### Launch example
-
-- display imu value
+### Install (For Darwin-inside PC or Developer only)
 
 ```bash
+# create catkin source directory
+mkdir -p ~/ros/ws_darwin/src
+cd ~/ros/ws_darwin/src
+wstool init
+wstool merge  https://raw.githubusercontent.com/mmurooka/jsk_darwin/fix-for-using-robotis-official-repo/darwin-op2.rosinstall -t .
+wstool up -j 10
 
-# imu transform
-sudo apt-get install ros-indigo-hector-imu-attitude-to-tf
-sudo apt-get install ros-indigo-rviz-imu-plugin
+# install dependencies
+sudo rosdep init
+rosdep update
+rosdep install --from-paths . --ignore-src -r -n -y --rosdistro indigo
 
-sudo bash
-# servo on
-roslaunch robotis_example robotis_example.launch
-# another sudo bash
-roslaunch robotis_example imu_view.launch
+# build packages
+cd ~/ros/ws_darwin
+catkin init
+catkin build
 
-# check imu value
-rostopic echo /imu
+# source to use programs
+echo 'source $HOME/ros/ws_darwin/devel/setup.bash' >> ~/.bashrc
+exec -l $SHELL
 ```
 
-- visualization
+### Launch robot
 
 ```bash
-source ~/ros/indigo/devel/setup.bash
+ssh robotis@<ip address of darwin> # Darwin IP
+sudo bash
+roslaunch jsk_darwin darwin_op2.launch
+# Servo becomes on and Darwin stands up and then sit down.
+```
+
+### Launch robot camera (unnecessary if you don't use camera)
+
+```bash
+ssh robotis@<ip address of darwin> # Darwin IP
+sudo bash
+roslaunch jsk_darwin darwin_op2_camera.launch
+# /image_raw topic starts to be published.
+# If program causes error, you need to reboot Darwin PC.
+```
+
+### Visualize
+
+```bash
 rossetrobot <ip address of darwin>
 rossetip # use same network of robot
+source ~/ros/ws_darwin/devel/setup.bash
 
-roslaunch robotis_op2_description robotis_op2_rviz.launch
-# you can set /map as Fixed Frame to see robot pose.
+roslaunch jsk_darwin darwin_op2_rviz.launch
+# Rviz launches and Darwin model is visualized.
+# Check IMU in displays panel to visualize IMU data.
 ```
+![](./figs/darwin_op2_rviz.png)
 
-- Robot camera view
+### Move from EusLisp
 
 ```bash
-sudo bash
+rossetrobot <ip address of darwin>
+rossetip # use same network of robot
+source ~/ros/ws_darwin/devel/setup.bash
 
-roslaunch robotis_op2_camera robotis_op2_camera.launch
-# you can view with /image_raw on rviz or rqt_image_view.
-```
-
-- Ball track view
-
-```bash
-sudo bash
-
-roslaunch ball_detector ball_detector_from_op.launch
-# you can view the result with /ball_detector_node/image_out on rviz or rqt_image_view.
-```
-
-- euslisp example
-
-```bash
-sudo apt-get install ros-indigo-euslisp ros-indigo-jskeus ros-indigo-roseus ros-indigo-pr2eus
-roscd robotis_example/euslisp
+roscd jsk_darwin/euslisp
 roseus robotis_op2-interface.l # run euslisp with prompt $ and ;; for comments
 
-$ init     ;; create irtview the robot model *robot*
-$ demo     ;; show the states using itimer
-$ demo-stop ;; stop the itimer
-$ demo1    ;; show the states using do-until-key
+;; initialize robot interface
+$ (robotis_op2-init)
+$ (objects (list *robotis_op2*))
+
+;; send command
+$ (send *robotis_op2* :init-pose)
+$ (send *ri* :angle-vector (send *robotis_op2* :angle-vector) 10000)
+$ (send *ri* :wait-interpolation)
+
+;; get actual state
+$ (send *robotis_op2* :angle-vector (send *ri* :state :potentio-vector))
 ```
-
-![Screen Shot](./Screenshot from 2016-05-08 06:19:25.png)
-
+![](./figs/robotis_op2_euslisp.png)
