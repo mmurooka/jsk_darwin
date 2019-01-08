@@ -18,7 +18,7 @@ source /opt/ros/indigo/setup.bash
 mkdir -p ~/ros/ws_darwin/src
 cd ~/ros/ws_darwin/src
 wstool init
-wstool merge  https://raw.githubusercontent.com/mmurooka/jsk_darwin/fix-for-using-robotis-official-repo/darwin-op2-beginner.rosinstall -t .
+wstool merge https://raw.githubusercontent.com/agent-system/jsk_darwin/master/darwin-op2-beginner.rosinstall -t .
 wstool up -j 10
 
 # install dependencies
@@ -43,7 +43,7 @@ exec -l $SHELL
 mkdir -p ~/ros/ws_darwin/src
 cd ~/ros/ws_darwin/src
 wstool init
-wstool merge  https://raw.githubusercontent.com/mmurooka/jsk_darwin/fix-for-using-robotis-official-repo/darwin-op2.rosinstall -t .
+wstool merge https://raw.githubusercontent.com/agent-system/jsk_darwin/master/darwin-op2.rosinstall -t .
 wstool up -j 10
 
 # install dependencies

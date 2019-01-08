@@ -30,5 +30,4 @@
     uri: https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-msgs
 - git:
     local-name: jsk_darwin
-    uri: https://github.com/mmurooka/jsk_darwin
-    version: fix-for-using-robotis-official-repo
+    uri: https://github.com/agent-system/jsk_darwin
