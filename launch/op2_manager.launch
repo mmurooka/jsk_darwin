@@ -10,6 +10,8 @@
     
     <param name="action_file_path"         value="$(find op2_manager)/config/motion_4096.bin" />
     <param name="init_pose_file_path"      value="$(find op2_manager)/config/ini_pose.yaml" />
+
+    <param name="/robotis/direct_control/check_collision" value="false" />
     
     <!-- OP2 Manager -->
     <node pkg="op2_manager" type="op2_manager" name="op2_manager" output="screen">
