@@ -1,0 +1,4 @@
+<launch>    
+  <node pkg="jsk_darwin" type="darwin_direct_controller" name="darwin_direct_controller"
+	output="screen" />
+</launch>
